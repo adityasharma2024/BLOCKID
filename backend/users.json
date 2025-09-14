@@ -1,0 +1,35 @@
+{
+  "B1001": {
+    "passwordHash": "$2a$10$abcdefghijklmnopqrstuv",
+    "address": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "details": {
+      "name": "Alice Sharma",
+      "dob": "1995-05-21",
+      "pob": "Delhi",
+      "tob": "10:30",
+      "birthReg": "REG001"
+    }
+  },
+  "B1002": {
+    "passwordHash": "$2a$10$mnopqrstuvabcdefghijkl",
+    "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+    "details": {
+      "name": "Ravi Kumar",
+      "dob": "1992-08-15",
+      "pob": "Mumbai",
+      "tob": "08:15",
+      "birthReg": "REG002"
+    }
+  },
+  "B2A717F": {
+    "passwordHash": "$2a$10$tfkLiRymANk7Ma7MpSM2veuHioLHSDFCooehc3SB7EcfVyV5k9izi",
+    "address": "0xe0cc7603e80cee715d842a42f9ac4749bfa7a0a7",
+    "details": {
+      "name": "aditya",
+      "dob": "2006-04-01",
+      "pob": "krishna nagar",
+      "tob": "16:26",
+      "birthReg": "2400320100087"
+    }
+  }
+}

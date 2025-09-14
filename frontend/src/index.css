@@ -1,0 +1,30 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --accent-purple: #7c3aed;
+  --accent-violet: #8b5cf6;
+  --muted: #94a3b8;
+}
+
+body {
+  background: linear-gradient(180deg, #0f1724 0%, #071028 100%);
+  color: #e6eef8;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* subtle glass cards */
+.glass {
+  background: rgba(17,24,39,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+  backdrop-filter: blur(6px);
+}
+
+/* nice button focus */
+button:focus { outline: none; box-shadow: 0 6px 24px rgba(124,58,237,0.18); transform: translateY(-1px); }
+
+/* monospace for code mockup */
+pre { font-family: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace; font-size: 12px; }
