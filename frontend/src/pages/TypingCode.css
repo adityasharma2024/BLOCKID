@@ -1,0 +1,35 @@
+.typing-container {
+  width: 100%;
+  max-width: 700px;     /* or whatever width fits your layout */
+  height: 500px;         /* fixed height */
+  padding: 1rem;
+  overflow: auto;        /* scroll if content overflows */
+  background-color: black;
+  border-radius: 16px;
+  border: 6px solid rgba(124, 58, 237, 0.12);
+  box-shadow: 0 10px 40px rgba(124, 58, 237, 0.35),
+              inset 0 0 40px rgba(124, 58, 237, 0.06);
+}
+.typing-pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+  color: #66ffe6;
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  border-right: none; /* remove from entire block */
+  padding-right: 4px;
+  min-height: 300px;
+}
+
+.caret {
+  display: inline-block;
+  width: 8px;
+  border-right: 2px solid #66ffe6;
+  animation: blink-caret 1s step-start infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
