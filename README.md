@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BlockID Full Prototype - Local (with ledger, login, transact)
 
 Generated: 2025-09-14T01:56:34.867244Z
@@ -40,3 +41,6 @@ Generated: 2025-09-14T01:56:34.867244Z
 Notes:
 - The backend includes `backend/users.json` and `backend/ledger.json` with demo entries.
 - The backend endpoint `/api/ledger/by/:blockid` returns user-specific ledger entries (sent or received).
+=======
+# BLOCKID
+>>>>>>> 76f3c5906365bacf8c036d7033ad63d69a1e1324
