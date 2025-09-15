@@ -31,5 +31,27 @@
       "tob": "16:26",
       "birthReg": "2400320100087"
     }
+  },
+  "B7DB1BC": {
+    "passwordHash": "$2a$10$IiqOpe2OGNeEoMBS21/X4.KClU47t/NZAZo1pdtmnLP89QA2Iscsq",
+    "address": "0xb1cc84c5a4013a5b565a878586dff8679d62f1fd",
+    "details": {
+      "name": "Akshat Rastogi",
+      "dob": "2000/01/01",
+      "pob": "Delhi",
+      "tob": "10:12",
+      "birthReg": "2400320100235"
+    }
+  },
+  "B3FCF9C": {
+    "passwordHash": "$2a$10$6xY./ZcT7ZWSiEP9xfdRnOW5CP4lx9jHfcN8PVJOV3Cw7l1vdbFqm",
+    "address": "0xe0cc7603e80cee715d842a42f9ac4749bfa7a0a7",
+    "details": {
+      "name": "Aditya Singh",
+      "dob": "2005/07/16",
+      "pob": "Bilaspur",
+      "tob": "24:00",
+      "birthReg": "2400320100087"
+    }
   }
 }

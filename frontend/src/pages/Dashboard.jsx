@@ -20,11 +20,12 @@ export default function Dashboard(){
   const [provider, setProvider] = useState(null)
   const [account, setAccount] = useState(null)
   const [connected, setConnected] = useState(false)
-  const [contractAddr, setContractAddr] = useState(null)
+  const [contractAddr, setContractAddr] = useState(null)  
   const [profile, setProfile] = useState(null)
   const [ledger, setLedger] = useState([])
   const [globalLedger, setGlobalLedger] = useState([])
   const [recipientLookup, setRecipientLookup] = useState(null)
+  const [qrLongBlockid, setQrLongBlockid] = useState(null)
 
   useEffect(()=>{
     const p = localStorage.getItem('blockid_profile')
@@ -37,6 +38,15 @@ export default function Dashboard(){
       window.ethereum.request({ method: 'eth_accounts' }).then(accs=>{ if(accs && accs.length) { setAccount(accs[0]); setConnected(true); } })
     }
   }, [])
+
+  // Generate QR code for long block id (wallet address) when profile is available
+  useEffect(()=>{
+    if(profile && profile.address){
+      QRCode.toDataURL(profile.address)
+        .then(url => setQrLongBlockid(url))
+        .catch(()=>setQrLongBlockid(null))
+    }
+  }, [profile])
 
   async function fetchContract(){ try{ const r=await fetch(BACKEND+'/api/contract'); const j=await r.json(); setContractAddr(j.address) }catch(e){} }
   async function fetchGlobalLedger(){ try{ const r=await fetch(BACKEND+'/api/ledger'); setGlobalLedger(await r.json()) }catch(e){} }
@@ -83,7 +93,7 @@ export default function Dashboard(){
 
   return (
     <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.45 }} className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-white">
-      <main className="pt-28 max-w-7xl mx-auto px-8 grid grid-cols-3 gap-8">
+      <main >
         {/* LEFT - hero / content */}
         <section className="col-span-2 space-y-6">
           <div className="space-y-4">
@@ -94,7 +104,14 @@ export default function Dashboard(){
               <p><strong>POB:</strong> {profile.details.pob}</p>
               <p><strong>TOB:</strong> {profile.details.tob}</p>
               <p><strong>BirthReg:</strong> {profile.details.birthReg}</p>
+              <p><strong>BlockID:</strong> {profile.blockid}</p>
               <p className="mt-2"><strong>Wallet:</strong> {profile.address}</p>
+              {qrLongBlockid && (
+                <div className="my-2">
+                  <img src={qrLongBlockid} alt="Long BlockID QR" style={{ width: 96, height: 96 }} />
+                  <div className="text-xs text-slate-400">Scan for Wallet Address</div>
+                </div>
+              )}
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800 shadow">
