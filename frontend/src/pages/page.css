@@ -1,0 +1,94 @@
+#text-xsleading-6 {
+  color:red;
+   font-family: Georgia, 'Times New Roman', Times, serif;
+}
+            /* <div id="text-xsleading-6">
+              <h3>// BlockID demo code snippet</h3>
+              <h3>void startCoding() </h3>
+              <h3> // welcome</h3>
+              <h3> void calculate_hash(char *output, const char *input) </h3>
+              <h3>
+                {" "}
+                // In a real project, this would be a SHA-256 hash function.
+              </h3>
+              <h3> // Here, we just use a simple mock to produce a "hash".</h3>
+              <h3> sprintf(output, "mock_hash_%ld", time(NULL));</h3>
+              <h3> </h3>
+
+              <h3> // Block structure</h3>
+              <h3> typedef struct Block </h3>
+              <h3> int index;</h3>
+              <h3> long timestamp;</h3>
+              <h3> char data[256];</h3>
+              <h3> char previous_hash[65];</h3>
+              <h3> char hash[65];</h3>
+              <h3> int nonce;</h3>
+              <h3> struct Block *next;</h3>
+              <h3> Block;</h3>
+            </div> */
+
+            /* {`// BlockID demo code snippet
+void startCoding() {
+  // welcome
+  void calculate_hash(char *output, const char *input) {
+    // In a real project, this would be a SHA-256 hash function.
+    // Here, we just use a simple mock to produce a "hash".
+    sprintf(output, "mock_hash_%ld", time(NULL));
+}
+
+// Block structure
+typedef struct Block {
+    int index;
+    long timestamp;
+    char data[256];
+    char previous_hash[65];
+    char hash[65];
+    int nonce;
+    struct Block *next;
+} Block;`} */
+
+
+            /* <pre className="text-xs leading-6" style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>
+{`// BlockID demo code snippet
+void startCoding() {
+  // welcome
+  void calculate_hash(char *output, const char *input) {
+    // In a real project, this would be a SHA-256 hash function.
+    // Here, we just use a simple mock to produce a "hash".
+    sprintf(output, "mock_hash_%ld", time(NULL));
+}
+
+// Block structure
+typedef struct Block {
+    int index;
+    long timestamp;
+    char data[256];
+    char previous_hash[65];
+    char hash[65];
+    int nonce;
+    struct Block *next;
+} Block;`}
+            </pre> */
+
+
+             /* <h3>// BlockID demo code snippet</h3>
+        <h3>  <pre classname="tag" style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>{`void startCoding(){ `}</pre></h3>
+        <h3> // welcome</h3>
+        <h3>   <pre style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>{`void calculate_hash(char *output, const char *input) {`}</pre></h3>
+        <h3> // In a real project, this would be a SHA-256 hash function.</h3>
+        <h3> // Here, we just use a simple mock to produce a "hash".</h3>
+        <h3> sprintf(output, "mock_hash_%ld", time(NULL));</h3>
+        <h3>  <pre style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>{`}`}</pre></h3>
+        <h3>  <pre style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>{`}`}</pre></h3>
+        <h3></h3>
+        <h3>// Block structure</h3>
+        <h3>  <pre style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>{`typedef struct Block {`}</pre></h3>
+        <h3> int index;\n'</h3>
+        <h3>long timestamp;</h3>
+        <h3>char data[256];</h3>
+        <h3>char previous_hash[65];</h3>
+        <h3>char hash[65];</h3>
+        <h3>int nonce;</h3>
+        <h3>struct Block *next;</h3>
+        <h3><pre style={{ color: "#66ffe6", fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace" }}>{`} Block;`}</pre></h3>
+            </div> */
