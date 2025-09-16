@@ -1,17 +1,24 @@
 import React from "react";
 import TypingCode from "./TypingCode"; // Adjust path if necessary
 import "./TypingCode.css"; // Ensure you have the CSS for typing effect
-export default function About() {
+import { Link } from "react-router-dom";
+export default function Home() {
   return (
-    <div className="prose prose-invert">
-      <h1 className="text-6xl font-extrabold leading-tight tracking-tight">
-        Featuring New Technology{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600">
-          BlockID
-        </span>
-        !
-      </h1>
-      <span className="flex justify-between flex-row-reverse ml-10">
+    <section className="grid grid-cols-3 gap-8 items-start">
+      <div className="col-span-2">
+        <h1 className="text-6xl font-extrabold leading-tight tracking-tight">
+          Featuring New Technology{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600">
+            BlockID
+          </span>
+          !
+        </h1>
+        {/* <pre className="mt-6 text-slate-400 text-lg max-w-xl"> LOL </pre> */}
+        <h2 className="mt-6 text-slate-400 text-lg max-w-xl">About Us</h2>
+        <p className="mt-6 text-slate-400 text-lg max-w-xl">About content...</p>
+      </div>
+
+      <div className="col-span-1">
         <div
           className="rounded-3xl p-4"
           style={{
@@ -26,7 +33,7 @@ export default function About() {
             style={{
               border: "6px solid rgba(124,58,237,0.12)",
               height: "33rem",
-              width: "468.800px",
+              widows: "468.800px",
             }}
           >
             <div className="flex items-center justify-between mb-4">
@@ -37,21 +44,11 @@ export default function About() {
               </div>
               <div className="text-xs text-slate-500">Live Coding</div>
             </div>
-            {/* Here is your animated typing code */}
+            {/* Animated typing effect */}
             <TypingCode />
           </div>
         </div>
-        <div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <h2 className="mt-6 text-slate-400 text-lg max-w-xl">About Us</h2>
-          <p className="mt-6 text-slate-400 text-lg max-w-xl">
-            About content...
-          </p>
-        </div>
-      </span>
-    </div>
+      </div>
+    </section>
   );
 }
