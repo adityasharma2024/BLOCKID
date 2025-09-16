@@ -17,9 +17,9 @@ export default function Layout({ myBlockId, account, connected, onConnect }) {
                   backdropFilter: 'blur(10px)', zIndex: 1000 }}>
         <div className="text-white font-extrabold text-5xl">Block<span className="text-emerald-400">ID</span></div><br/>
         <Link to="/" className="px-4 py-2 rounded-full bg-gradient-to-r text-white font-semibold">Home</Link>
-        <Link to="/about" className="px-4 py-2 rounded-full hover:opacity-90">About</Link>
+        {/* <Link to="/about" className="px-4 py-2 rounded-full hover:opacity-90">About</Link>
         <Link to="/tutorials" className="px-4 py-2 rounded-full hover:opacity-90">Tutorials</Link>
-        <Link to="/contact" className="px-4 py-2 rounded-full hover:opacity-90">Contact</Link>
+        <Link to="/contact" className="px-4 py-2 rounded-full hover:opacity-90">Contact</Link> */}
         <Link to="/dashboard" className="px-4 py-2 rounded-full hover:opacity-90">Dashboard</Link>
 
         <div className="flex items-center gap-6 flex-row-reverse w-full">

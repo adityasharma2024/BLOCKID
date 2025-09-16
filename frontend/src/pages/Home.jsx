@@ -4,8 +4,8 @@ import "./TypingCode.css"; // Ensure you have the CSS for typing effect
 import { Link } from "react-router-dom";
 export default function Home() {
   return (
-    <section className="grid grid-cols-3 gap-8 items-start">
-      <div className="col-span-2">
+    <section className="grid grid-cols-3 gap-8 items-start" style={{}}>
+      <div className="col-span-2" style={{ transform: `translateX(5rem)` }}>
         <h1 className="text-6xl font-extrabold leading-tight tracking-tight">
           Featuring New Technology{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600">
@@ -24,7 +24,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="col-span-1">
+      <div className="col-span-1" style={{ transform: `translateX(-3rem)` }}>
         <div
           className="rounded-3xl p-4"
           style={{
@@ -55,6 +55,81 @@ export default function Home() {
           </div>
         </div>
       </div>
+    <div style={{height:'5px'}}></div>
+      <footer
+        style={{
+          bottom: "0",
+          gridColumn: "1 / span 3",
+          marginTop: "2rem",
+          backgroundColor: "rgba(255, 255, 255, 0.05)",
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "1.5rem 2rem",
+          borderRadius: "1rem",
+          gap: "2rem",
+          flexWrap: "wrap",
+          alignItems: "flex-start", // Align columns from top
+        }}
+      >
+        {[
+          // Map over to avoid repetitive JSX if preferred, shown as literal for clarity
+          {
+            title: "Get to know us",
+            links: [
+              "About Amazon",
+              "Careers",
+              "Press news-releases",
+              "Amazon science",
+            ],
+          },
+          {
+            title: "Connect with us",
+            links: ["Facebook", "Twitter", "Instagram"],
+          },
+          {
+            title: "Let Us Help You",
+            links: [
+              "Your Account",
+              "Return Center",
+              "Recall and Product Safety Alerts",
+              "100% Purchase protection",
+              "Amazon App Download",
+              "Help",
+            ],
+          },
+        ].map(({ title, links }, idx) => (
+          <div
+            key={idx}
+            className="links"
+            style={{ flex: "1 1 30%", minWidth: "250px" }}
+          >
+            <h3
+              style={{
+                color: "white",
+                marginBottom: "1rem",
+                textAlign: "left",
+              }}
+            >
+              {title}
+            </h3>
+            {links.map((link, i) => (
+              <div key={i} className="op" style={{ marginBottom: "0.5rem" }}>
+                <a
+                  href="#"
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    display: "block",
+                    textAlign: "left",
+                  }}
+                >
+                  {link}
+                </a>
+              </div>
+            ))}
+          </div>
+        ))}
+      </footer>
     </section>
   );
 }
