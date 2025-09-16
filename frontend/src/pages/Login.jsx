@@ -17,6 +17,7 @@ export default function Login() {
       const res = await fetch(BACKEND + '/api/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ blockid, password }) })
       const j = await res.json()
       if(j.ok){
+        
         // store profile in localStorage for simple session
         localStorage.setItem('blockid_profile', JSON.stringify({ blockid, address: j.address, details: j.details }))
         nav('/dashboard')

@@ -32,16 +32,41 @@ export default function Dashboard(){
 
   useEffect(()=>{
     const p = localStorage.getItem('blockid_profile')
-    if(p) {
-      const parsed = JSON.parse(p)
-      setProfile(parsed)
-      // fetch latest addresses from backend
-      fetch(BACKEND + '/api/userByBlockid/' + parsed.blockid)
-        .then(r=>r.json())
-        .then(data=>{
-          setAddresses(data.addresses || (data.address ? [data.address] : []))
-        })
+
+
+// *************************This part was the Problem for Ledger***************************************
+    // if(p) {
+    //   const parsed = JSON.parse(p)
+    //   setProfile(parsed)
+    //   // fetch latest addresses from backend
+    //   fetch(BACKEND + '/api/userByBlockid/' + parsed.blockid)
+    //     .then(r=>r.json())
+    //     .then(data=>{
+    //       setAddresses(data.addresses || (data.address ? [data.address] : []))
+    //     })
+    // }
+
+// *************************The Solution of Ledger Problem***************************************
+
+
+    if (p) {
+      const parsed = JSON.parse(p);
+      setProfile(parsed);
+      if (parsed.blockid) {
+        loadMyLedger(parsed.blockid);
+      }
     }
+    // And update loadMyLedger to accept blockid as a parameter
+    async function loadMyLedger(blockid) {
+      if (!blockid) return;
+      try {
+        const r = await fetch(BACKEND + '/api/ledger/by/' + blockid);
+        const d = await r.json();
+        setLedger(d);
+      } catch (e) {}
+    }
+
+
     fetchContract(); fetchGlobalLedger(); loadMyLedger();
     // try to set provider/account if MetaMask available
     if(window.ethereum){
@@ -225,7 +250,7 @@ export default function Dashboard(){
                 <button className="bg-amber-400 px-2 py-1 rounded" onClick={()=>exportPDF(ledger)}>PDF</button>
               </div>
             </div>
-            <div className="mt-3 max-h-96 overflow-auto">
+            {/* <div className="mt-3 max-h-96 overflow-auto">
               {ledger.length===0 ? <p className="text-sm text-slate-400">No transactions for your BlockID yet.</p> :
                 <table className="w-full text-sm">
                   <thead className="text-slate-400">
@@ -242,7 +267,43 @@ export default function Dashboard(){
                   </tbody>
                 </table>
               }
-            </div>
+            </div> */}
+
+          <div className="mt-3 max-h-96 overflow-auto">
+            <table className="w-full text-sm">
+              <thead className="text-slate-400">
+                <tr>
+                  <th className="text-left">Sender</th>
+                  <th className="text-left">Recipient</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ledger.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="py-4 text-center text-slate-400">
+                      No transactions for your BlockID yet.
+                    </td>
+                  </tr>
+                ) : (
+                  ledger.map((r, i) => (
+                    <tr key={i} className="border-t border-slate-700">
+                      <td className="py-2">
+                        {r.senderBlockid}
+                        <div className="text-xs text-slate-500">{shortAddr(r.senderAddress)}</div>
+                      </td>
+                      <td className="py-2">
+                        {r.recipientBlockid}
+                        <div className="text-xs text-slate-500">{shortAddr(r.recipientAddress)}</div>
+                      </td>
+                      <td className="py-2 text-center">{r.amount}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+
             <div className="mt-3 text-xs text-slate-400">Showing transactions sent or received by your BlockID.</div>
           </div>
 

@@ -41,6 +41,7 @@ app.post('/api/contract', (req, res) => {
 app.post('/api/registerUser', async (req, res) => {
   try {
     const { blockid, password, address, details } = req.body || {};
+
     if (!blockid || !password || !address || !details) return res.status(400).json({ error: 'missing fields' });
     const users = readUsers();
     if (users[blockid]) {
