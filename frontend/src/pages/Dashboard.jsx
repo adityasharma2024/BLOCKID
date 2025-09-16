@@ -26,10 +26,22 @@ export default function Dashboard(){
   const [globalLedger, setGlobalLedger] = useState([])
   const [recipientLookup, setRecipientLookup] = useState(null)
   const [qrLongBlockid, setQrLongBlockid] = useState(null)
+  const [recipientAddressInput, setRecipientAddressInput] = useState('')
+  const [recipientNameInput, setRecipientNameInput] = useState('')
+  const [addresses, setAddresses] = useState([])
 
   useEffect(()=>{
     const p = localStorage.getItem('blockid_profile')
-    if(p) setProfile(JSON.parse(p))
+    if(p) {
+      const parsed = JSON.parse(p)
+      setProfile(parsed)
+      // fetch latest addresses from backend
+      fetch(BACKEND + '/api/userByBlockid/' + parsed.blockid)
+        .then(r=>r.json())
+        .then(data=>{
+          setAddresses(data.addresses || (data.address ? [data.address] : []))
+        })
+    }
     fetchContract(); fetchGlobalLedger(); loadMyLedger();
     // try to set provider/account if MetaMask available
     if(window.ethereum){
@@ -53,21 +65,52 @@ export default function Dashboard(){
   async function loadMyLedger(){ if(!profile) return; try{ const r=await fetch(BACKEND+'/api/ledger/by/'+profile.blockid); const d=await r.json(); setLedger(d) }catch(e){} }
 
   async function lookupRecipient(blockid){
-    if(!blockid) return setRecipientLookup(null)
-    try{ const r=await fetch(BACKEND + '/api/userByBlockid/' + blockid); if(r.status===200){ setRecipientLookup(await r.json()) } else { setRecipientLookup(null) } }catch(e){ setRecipientLookup(null) }
+    if(!blockid) {
+      setRecipientLookup(null)
+      setRecipientAddressInput('')
+      setRecipientNameInput('')
+      return
+    }
+    try{
+      const r=await fetch(BACKEND + '/api/userByBlockid/' + blockid)
+      if(r.status===200){
+        const data = await r.json()
+        setRecipientLookup(data)
+        setRecipientAddressInput(data.address)
+        setRecipientNameInput(data.details.name)
+      } else {
+        setRecipientLookup(null)
+        setRecipientAddressInput('')
+        setRecipientNameInput('')
+      }
+    }catch(e){
+      setRecipientLookup(null)
+      setRecipientAddressInput('')
+      setRecipientNameInput('')
+    }
   }
 
   async function sendToRecipient(recipientBlockid, amountEth){
+    // Use input fields for address and name
+    const recipientAddress = recipientAddressInput
+    const recipientName = recipientNameInput
     if(!recipientBlockid) return alert('Enter recipient BlockID')
-    if(!recipientLookup) return alert('Recipient not found')
+    if(!recipientAddress) return alert('Enter recipient address')
+    if(!recipientName) return alert('Enter recipient name')
     if(!provider) return alert('Connect wallet in browser')
     if(!amountEth || Number(amountEth)<=0) return alert('Invalid amount')
     try{
       const signer = await provider.getSigner()
-      const tx = await signer.sendTransaction({ to: recipientLookup.address, value: ethers.parseEther(amountEth) })
+      const tx = await signer.sendTransaction({ to: recipientAddress, value: ethers.parseEther(amountEth) })
       await tx.wait()
       await fetch(BACKEND + '/api/ledger', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
-        senderBlockid: profile.blockid, senderAddress: signer.address || account, recipientBlockid, recipientAddress: recipientLookup.address, amount: amountEth, txHash: tx.hash
+        senderBlockid: profile.blockid,
+        senderAddress: signer.address || account,
+        recipientBlockid,
+        recipientAddress,
+        recipientName,
+        amount: amountEth,
+        txHash: tx.hash
       })})
       alert('Transfer complete: '+tx.hash)
       loadMyLedger(); fetchGlobalLedger()
@@ -105,7 +148,14 @@ export default function Dashboard(){
               <p><strong>TOB:</strong> {profile.details.tob}</p>
               <p><strong>BirthReg:</strong> {profile.details.birthReg}</p>
               <p><strong>BlockID:</strong> {profile.blockid}</p>
-              <p className="mt-2"><strong>Wallet:</strong> {profile.address}</p>
+              <div className="mt-2">
+                <strong>Wallet Addresses:</strong>
+                <ul className="text-xs mt-1">
+                  {addresses.map((addr, i) => (
+                    <li key={i} className="break-all">{addr}</li>
+                  ))}
+                </ul>
+              </div>
               {qrLongBlockid && (
                 <div className="my-2">
                   <img src={qrLongBlockid} alt="Long BlockID QR" style={{ width: 96, height: 96 }} />
@@ -117,15 +167,48 @@ export default function Dashboard(){
             <div className="p-4 rounded-2xl bg-slate-800 shadow">
               <h3 className="text-xl font-semibold">Transact (send ETH to another BlockID)</h3>
               <div className="grid grid-cols-1 gap-2">
-                <input placeholder="Recipient BlockID (e.g. B1002)" onBlur={e=>lookupRecipient(e.target.value)} id="recip" className="p-2 rounded bg-slate-700" />
-                <div className="p-2 rounded bg-slate-900">
-                  <div><strong>Recipient Address:</strong> {recipientLookup? recipientLookup.address : '—'}</div>
-                  <div><strong>Name:</strong> {recipientLookup? recipientLookup.details.name : '—'}</div>
-                </div>
-                <input placeholder="Amount (ETH)" id="amt" className="p-2 rounded bg-slate-700" />
+                <input
+                  placeholder="Recipient BlockID (e.g. B1002)"
+                  onBlur={e=>lookupRecipient(e.target.value)}
+                  id="recip"
+                  className="p-2 rounded bg-slate-700"
+                />
+                <input
+                  placeholder="Recipient Address"
+                  value={recipientAddressInput}
+                  onChange={e=>setRecipientAddressInput(e.target.value)}
+                  className="p-2 rounded bg-slate-700"
+                />
+                <input
+                  placeholder="Recipient Name"
+                  value={recipientNameInput}
+                  onChange={e=>setRecipientNameInput(e.target.value)}
+                  className="p-2 rounded bg-slate-700"
+                />
+                <input
+                  placeholder="Amount (ETH)"
+                  id="amt"
+                  className="p-2 rounded bg-slate-700"
+                />
                 <div className="flex gap-2">
-                  <button className="bg-emerald-400 text-black px-4 py-2 rounded" onClick={()=>{ const rid = document.getElementById('recip').value; const amt = document.getElementById('amt').value; sendToRecipient(rid, amt); }}>Send Ether</button>
-                  <button className="bg-slate-700 text-white px-3 py-2 rounded" onClick={()=>{ setRecipientLookup(null); document.getElementById('recip').value=''; document.getElementById('amt').value=''; }}>Reset</button>
+                  <button
+                    className="bg-emerald-400 text-black px-4 py-2 rounded"
+                    onClick={()=>{
+                      const rid = document.getElementById('recip').value
+                      const amt = document.getElementById('amt').value
+                      sendToRecipient(rid, amt)
+                    }}
+                  >Send Ether</button>
+                  <button
+                    className="bg-slate-700 text-white px-3 py-2 rounded"
+                    onClick={()=>{
+                      setRecipientLookup(null)
+                      setRecipientAddressInput('')
+                      setRecipientNameInput('')
+                      document.getElementById('recip').value=''
+                      document.getElementById('amt').value=''
+                    }}
+                  >Reset</button>
                 </div>
               </div>
             </div>

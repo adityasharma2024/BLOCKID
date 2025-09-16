@@ -43,10 +43,17 @@ app.post('/api/registerUser', async (req, res) => {
     const { blockid, password, address, details } = req.body || {};
     if (!blockid || !password || !address || !details) return res.status(400).json({ error: 'missing fields' });
     const users = readUsers();
-    if (users[blockid]) return res.status(400).json({ error: 'blockid exists' });
+    if (users[blockid]) {
+      // If blockid exists, add address to addresses array if not present
+      if (!users[blockid].addresses) users[blockid].addresses = [users[blockid].address].filter(Boolean);
+      if (!users[blockid].addresses.includes(address)) users[blockid].addresses.push(address);
+      users[blockid].address = users[blockid].addresses[0]; // for legacy compatibility
+      writeUsers(users);
+      return res.json({ ok:true, info: 'address added to existing blockid' });
+    }
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    users[blockid] = { passwordHash: hash, address, details };
+    users[blockid] = { passwordHash: hash, addresses: [address], address, details };
     writeUsers(users);
     res.json({ ok:true });
   } catch (e) { console.error(e); res.status(500).json({ error: 'server error' }); }
@@ -60,7 +67,7 @@ app.post('/api/login', (req, res) => {
   if (!u) return res.status(401).json({ error: 'not found' });
   const ok = bcrypt.compareSync(password, u.passwordHash);
   if (!ok) return res.status(401).json({ error: 'invalid' });
-  res.json({ ok:true, address: u.address, details: u.details });
+  res.json({ ok:true, addresses: u.addresses || (u.address ? [u.address] : []), address: u.address, details: u.details });
 });
 
 app.get('/api/userByBlockid/:id', (req, res) => {
@@ -68,7 +75,7 @@ app.get('/api/userByBlockid/:id', (req, res) => {
   const users = readUsers();
   const u = users[id];
   if (!u) return res.status(404).json({ error: 'not found' });
-  res.json({ address: u.address, details: u.details, blockid: id });
+  res.json({ addresses: u.addresses || (u.address ? [u.address] : []), address: u.address, details: u.details, blockid: id });
 });
 
 app.post('/api/ledger', (req, res) => {
@@ -95,7 +102,13 @@ app.get('/api/ledger/by/:blockid', (req, res) => {
 app.get('/api/events', (req, res) => { res.json(JSON.parse(fs.readFileSync(EVENTS_FILE))); });
 
 app.get('/api/users', (req, res) => {
-  const users = readUsers(); const arr = Object.keys(users).map(k => ({ blockid: k, address: users[k].address, details: users[k].details }));
+  const users = readUsers();
+  const arr = Object.keys(users).map(k => ({
+    blockid: k,
+    addresses: users[k].addresses || (users[k].address ? [users[k].address] : []),
+    address: users[k].address,
+    details: users[k].details
+  }));
   res.json(arr);
 });
 

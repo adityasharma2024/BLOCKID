@@ -1,6 +1,7 @@
 {
   "B1001": {
     "passwordHash": "$2a$10$abcdefghijklmnopqrstuv",
+    "addresses": ["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"],
     "address": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
     "details": {
       "name": "Alice Sharma",
@@ -12,6 +13,7 @@
   },
   "B1002": {
     "passwordHash": "$2a$10$mnopqrstuvabcdefghijkl",
+    "addresses": ["0x70997970C51812dc3A010C7d01b50e0d17dc79C8"],
     "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
     "details": {
       "name": "Ravi Kumar",
@@ -23,6 +25,7 @@
   },
   "B2A717F": {
     "passwordHash": "$2a$10$tfkLiRymANk7Ma7MpSM2veuHioLHSDFCooehc3SB7EcfVyV5k9izi",
+    "addresses": ["0xe0cc7603e80cee715d842a42f9ac4749bfa7a0a7"],
     "address": "0xe0cc7603e80cee715d842a42f9ac4749bfa7a0a7",
     "details": {
       "name": "aditya",
@@ -34,6 +37,7 @@
   },
   "B7DB1BC": {
     "passwordHash": "$2a$10$IiqOpe2OGNeEoMBS21/X4.KClU47t/NZAZo1pdtmnLP89QA2Iscsq",
+    "addresses": ["0xb1cc84c5a4013a5b565a878586dff8679d62f1fd"],
     "address": "0xb1cc84c5a4013a5b565a878586dff8679d62f1fd",
     "details": {
       "name": "Akshat Rastogi",
@@ -45,6 +49,7 @@
   },
   "B3FCF9C": {
     "passwordHash": "$2a$10$6xY./ZcT7ZWSiEP9xfdRnOW5CP4lx9jHfcN8PVJOV3Cw7l1vdbFqm",
+    "addresses": ["0xe0cc7603e80cee715d842a42f9ac4749bfa7a0a7"],
     "address": "0xe0cc7603e80cee715d842a42f9ac4749bfa7a0a7",
     "details": {
       "name": "Aditya Singh",
