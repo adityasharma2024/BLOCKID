@@ -31,7 +31,7 @@ export default function TypingCode() {
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + codeString[index]);
         setIndex(index + 1);
-      }, 10); // Adjust typing speed here
+      }, 1); // Adjust typing speed here
 
       return () => clearTimeout(timeout);
     }
