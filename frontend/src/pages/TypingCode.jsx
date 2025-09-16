@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './TypingCode.css';
 
-const codeString = `// BlockID demo code snippet
+const codeString = 
+`// BlockID demo code snippet
 void startCoding() {
   // welcome
   void calculate_hash(char *output, const char *input) {
@@ -30,7 +31,7 @@ export default function TypingCode() {
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + codeString[index]);
         setIndex(index + 1);
-      }, 40);
+      }, 10); // Adjust typing speed here
 
       return () => clearTimeout(timeout);
     }
