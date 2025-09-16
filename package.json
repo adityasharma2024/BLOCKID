@@ -6,11 +6,12 @@
     "deploy": "hardhat run scripts/deploy.js --network localhost > deploy.log && node scripts/autodeploy.js"
   },
   "devDependencies": {
-    "hardhat": "^2.22.0",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0"
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "hardhat": "^2.22.0"
   },
   "dependencies": {
     "ethers": "^6.8.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "react-type-animation": "^3.2.0"
   }
 }

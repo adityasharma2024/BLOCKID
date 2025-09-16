@@ -9,7 +9,9 @@ export default function Layout({ myBlockId, account, connected, onConnect }) {
       
 
       <br />
-      <div className="hidden md:flex items-center gap-4 bg-slate-800/30 px-3 py-2 rounded-2xl shadow-lg">
+      <div className="hidden md:flex items-center gap-4 bg-slate-800/30 px-3 py-2 rounded-2xl shadow-lg" 
+      style={{ position: 'fixed', top: '0rem', left: '0rem',right:'0rem',backgroundColor: 'rgba(30, 41, 59, 0.8)',
+                backdropFilter: 'blur(10px)',zIndex: 1000 }}>
       <div className="text-white font-extrabold text-5xl">Block<span className="text-emerald-400">ID</span></div><br/>
         <Link to="/" className="px-4 py-2 rounded-full bg-gradient-to-r text-white font-semibold">Home</Link>
         <Link to="/about" className="px-4 py-2 rounded-full hover:opacity-90">About</Link>
