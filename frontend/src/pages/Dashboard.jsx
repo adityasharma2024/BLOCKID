@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'
 import { ethers } from 'ethers'
 import QRCode from 'qrcode'
@@ -31,24 +32,9 @@ export default function Dashboard(){
   const [addresses, setAddresses] = useState([])
 
   useEffect(()=>{
-    const p = localStorage.getItem('blockid_profile')
+    const p = localStorage.getItem('blockid_profile');
 
-
-// *************************This part was the Problem for Ledger***************************************
-    // if(p) {
-    //   const parsed = JSON.parse(p)
-    //   setProfile(parsed)
-    //   // fetch latest addresses from backend
-    //   fetch(BACKEND + '/api/userByBlockid/' + parsed.blockid)
-    //     .then(r=>r.json())
-    //     .then(data=>{
-    //       setAddresses(data.addresses || (data.address ? [data.address] : []))
-    //     })
-    // }
-
-// *************************The Solution of Ledger Problem***************************************
-
-
+    // ledger
     if (p) {
       const parsed = JSON.parse(p);
       setProfile(parsed);
@@ -84,6 +70,18 @@ export default function Dashboard(){
         .catch(()=>setQrLongBlockid(null))
     }
   }, [profile])
+
+  // Remove session on tab close/refresh
+  useEffect(() => {
+    const handleUnload = () => {
+      localStorage.removeItem('blockid_profile');
+    };
+    window.addEventListener('beforeunload', handleUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, []);
+
 
   async function fetchContract(){ try{ const r=await fetch(BACKEND+'/api/contract'); const j=await r.json(); setContractAddr(j.address) }catch(e){} }
   async function fetchGlobalLedger(){ try{ const r=await fetch(BACKEND+'/api/ledger'); setGlobalLedger(await r.json()) }catch(e){} }
@@ -161,32 +159,61 @@ export default function Dashboard(){
 
   return (
     <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.45 }} className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-white">
+      
       <main >
         {/* LEFT - hero / content */}
         <section className="col-span-2 space-y-6">
           <div className="space-y-4">
-            <div className="p-4 rounded-2xl bg-slate-800 shadow">
-              <h3 className="text-xl font-semibold">Profile</h3>
-              <p className="mt-2"><strong>Name:</strong> {profile.details.name}</p>
-              <p><strong>DOB:</strong> {profile.details.dob}</p>
-              <p><strong>POB:</strong> {profile.details.pob}</p>
-              <p><strong>TOB:</strong> {profile.details.tob}</p>
-              <p><strong>BirthReg:</strong> {profile.details.birthReg}</p>
-              <p><strong>BlockID:</strong> {profile.blockid}</p>
-              <div className="mt-2">
-                <strong>Wallet Addresses:</strong>
-                <ul className="text-xs mt-1">
-                  {addresses.map((addr, i) => (
-                    <li key={i} className="break-all">{addr}</li>
-                  ))}
-                </ul>
-              </div>
-              {qrLongBlockid && (
-                <div className="my-2">
-                  <img src={qrLongBlockid} alt="Long BlockID QR" style={{ width: 96, height: 96 }} />
-                  <div className="text-xs text-slate-400">Scan for Wallet Address</div>
+            <div className="p-6 rounded-2xl bg-slate-800 shadow flex flex-col md:flex-row justify-between items-start gap-8">
+              <div className="flex-1 ml-20">
+                <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span role="img" aria-label="profile">👤</span> Profile
+                </h3>
+                <div className="space-y-2 text-base">
+                  <div>
+                    <span className="font-semibold text-sky-400">Name:</span>
+                    <span className="ml-2">{profile.details.name}</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-sky-400">DOB:</span>
+                    <span className="ml-2">{profile.details.dob}</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-sky-400">POB:</span>
+                    <span className="ml-2">{profile.details.pob}</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-sky-400">TOB:</span>
+                    <span className="ml-2">{profile.details.tob}</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-sky-400">BirthReg:</span>
+                    <span className="ml-2">{profile.details.birthReg}</span>
+                  </div>
+                  <div>
+                    <span className="font-semibold text-sky-400">BlockID:</span>
+                    <span className="ml-2">{profile.blockid}</span>
+                  </div>
                 </div>
-              )}
+              </div>
+              <div className="flex-1 flex flex-col items-center">
+                <div className="mb-4">
+                  <span className="font-semibold text-sky-400">Wallet Addresses:</span>
+                    {addresses.map((addr, i) => (
+                      <li key={i} className="break-all flex items-center gap-1">
+                        <span role="img" aria-label="wallet">💳</span>
+                        {addr}
+                      </li>
+                    ))}
+                  
+                </div>
+                {qrLongBlockid && (
+                  <div className="flex flex-col items-center">
+                    <img src={qrLongBlockid} alt="Long BlockID QR" style={{ width: 175, height: 175 }} className="rounded shadow" />
+                    <div className="text-xs text-slate-400 mt-2">Scan for Wallet Address</div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800 shadow">
@@ -239,6 +266,8 @@ export default function Dashboard(){
             </div>
           </div>
         </section>
+
+        <br />
 
         {/* Right - Ledger */}
         <aside className="col-span-1">
@@ -313,6 +342,7 @@ export default function Dashboard(){
           </div>
         </aside>
       </main>
+
     </motion.div>
   )
 }
