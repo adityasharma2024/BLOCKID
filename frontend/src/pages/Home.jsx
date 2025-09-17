@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="container" style={{ width:"100vw"}}>
-    <section className="grid grid-cols-3 gap-8 items-start" style={{}}>
+    <section className="grid grid-cols-3 gap-8 items-start" style={{ width:"100vw"}}>
       <div className="col-span-2" style={{ transform: `translateX(5rem)` }}>
         <h1 className="text-6xl font-extrabold leading-tight tracking-tight mt-6">
           Featuring New Technology{" "}
@@ -62,7 +62,7 @@ export default function Home() {
       
     </section>
         <footer
-          className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white grid grid-cols-1 md:grid-cols-4 gap-8 shadow-lg">
+          className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white grid grid-cols-1 md:grid-cols-4 gap-8 shadow-lg"style={{width:"100vw"}}>
           <div>
             <img src={myImage} alt="BlockID logo" className="w-32 mb-4 rounded-xl" />
             <div className="font-bold text-xl mb-2">BlockID</div>
