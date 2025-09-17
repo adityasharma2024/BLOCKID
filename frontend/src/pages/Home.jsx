@@ -1,9 +1,11 @@
 import React from "react";
+import myImage from "./image/Screenshot 2025-09-17 091406.png";
 import TypingCode from "./TypingCode"; // Adjust path if necessary
 import "./TypingCode.css"; // Ensure you have the CSS for typing effect
 import { Link } from "react-router-dom";
 export default function Home() {
   return (
+    <div className="container" style={{ width:"100vw"}}>
     <section className="grid grid-cols-3 gap-8 items-start" style={{}}>
       <div className="col-span-2" style={{ transform: `translateX(5rem)` }}>
         <h1 className="text-6xl font-extrabold leading-tight tracking-tight">
@@ -55,8 +57,11 @@ export default function Home() {
           </div>
         </div>
       </div>
-    <div style={{height:'5px'}}></div>
-      <footer
+      <br />
+      <br />
+      
+    </section>
+    <footer
         style={{
           bottom: "0",
           gridColumn: "1 / span 3",
@@ -69,17 +74,21 @@ export default function Home() {
           gap: "2rem",
           flexWrap: "wrap",
           alignItems: "flex-start", // Align columns from top
+          width: "100vh",
         }}
       >
+        <div className="image">
+          <img src={myImage} alt="image" />
+        </div>
         {[
           // Map over to avoid repetitive JSX if preferred, shown as literal for clarity
           {
             title: "Get to know us",
             links: [
-              "About Amazon",
+              "About BlockId",
               "Careers",
               "Press news-releases",
-              "Amazon science",
+              "BlockId science",
             ],
           },
           {
@@ -88,13 +97,17 @@ export default function Home() {
           },
           {
             title: "Let Us Help You",
+            links: ["Your Account", "BlockId App Download", "Help"],
+          },
+          {
+            title: "Industry Solutions",
             links: [
-              "Your Account",
-              "Return Center",
-              "Recall and Product Safety Alerts",
-              "100% Purchase protection",
-              "Amazon App Download",
-              "Help",
+              " Banking & Finance",
+              " Education",
+              "Technology",
+              "Medical",
+              "Government",
+              "Legal",
             ],
           },
         ].map(({ title, links }, idx) => (
@@ -130,6 +143,6 @@ export default function Home() {
           </div>
         ))}
       </footer>
-    </section>
+      </div>
   );
 }
