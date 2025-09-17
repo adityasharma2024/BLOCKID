@@ -340,8 +340,12 @@ export default function Dashboard(){
             <h4 className="font-semibold">Global Ledger (admin)</h4>
             <div className="mt-2 text-sm text-slate-400">Total entries: {globalLedger.length}</div>
           </div>
+          
         </aside>
+
       </main>
+
+
 
     </motion.div>
   )

@@ -8,12 +8,12 @@ export default function Home() {
     <div className="container" style={{ width:"100vw"}}>
     <section className="grid grid-cols-3 gap-8 items-start" style={{}}>
       <div className="col-span-2" style={{ transform: `translateX(5rem)` }}>
-        <h1 className="text-6xl font-extrabold leading-tight tracking-tight">
+        <h1 className="text-6xl font-extrabold leading-tight tracking-tight mt-6">
           Featuring New Technology{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600">
-            BlockID
-          </span>
-          !
+          <h1 className="text-transparent mt-4 bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600">
+            BlockID !
+          </h1>
+          
         </h1>
         {/* <pre className="mt-6 text-slate-400 text-lg max-w-xl"> LOL </pre> */}
         <div className="mt-8 flex items-center gap-4">
@@ -61,88 +61,42 @@ export default function Home() {
       <br />
       
     </section>
-    <footer
-        style={{
-          bottom: "0",
-          gridColumn: "1 / span 3",
-          marginTop: "2rem",
-          backgroundColor: "rgba(255, 255, 255, 0.05)",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "1.5rem 2rem",
-          borderRadius: "1rem",
-          gap: "2rem",
-          flexWrap: "wrap",
-          alignItems: "flex-start", // Align columns from top
-          width: "100vh",
-        }}
-      >
-        <div className="image">
-          <img src={myImage} alt="image" />
-        </div>
-        {[
-          // Map over to avoid repetitive JSX if preferred, shown as literal for clarity
-          {
-            title: "Get to know us",
-            links: [
-              "About BlockId",
-              "Careers",
-              "Press news-releases",
-              "BlockId science",
-            ],
-          },
-          {
-            title: "Connect with us",
-            links: ["Facebook", "Twitter", "Instagram"],
-          },
-          {
-            title: "Let Us Help You",
-            links: ["Your Account", "BlockId App Download", "Help"],
-          },
-          {
-            title: "Industry Solutions",
-            links: [
-              " Banking & Finance",
-              " Education",
-              "Technology",
-              "Medical",
-              "Government",
-              "Legal",
-            ],
-          },
-        ].map(({ title, links }, idx) => (
-          <div
-            key={idx}
-            className="links"
-            style={{ flex: "1 1 30%", minWidth: "250px" }}
-          >
-            <h3
-              style={{
-                color: "white",
-                marginBottom: "1rem",
-                textAlign: "left",
-              }}
-            >
-              {title}
-            </h3>
-            {links.map((link, i) => (
-              <div key={i} className="op" style={{ marginBottom: "0.5rem" }}>
-                <a
-                  href="#"
-                  style={{
-                    textDecoration: "none",
-                    color: "white",
-                    display: "block",
-                    textAlign: "left",
-                  }}
-                >
-                  {link}
-                </a>
-              </div>
-            ))}
+        <footer
+          className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white grid grid-cols-1 md:grid-cols-4 gap-8 shadow-lg">
+          <div>
+            <img src={myImage} alt="BlockID logo" className="w-32 mb-4 rounded-xl" />
+            <div className="font-bold text-xl mb-2">BlockID</div>
+            <div className="text-slate-400 text-sm">Empowering identity with blockchain technology.</div>
           </div>
-        ))}
-      </footer>
+          <div>
+            <h3 className="font-semibold mb-3 text-sky-400">Get to know us</h3>
+            <ul className="space-y-1 text-sm">
+              <li><a href="#" className="hover:underline">About BlockID</a></li>
+              <li><a href="#" className="hover:underline">Careers</a></li>
+              <li><a href="#" className="hover:underline">Press & News</a></li>
+              <li><a href="#" className="hover:underline">BlockID Science</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold mb-3 text-sky-400">Connect with us</h3>
+            <ul className="space-y-1 text-sm">
+              <li><a href="#" className="hover:underline">Facebook</a></li>
+              <li><a href="#" className="hover:underline">Twitter</a></li>
+              <li><a href="#" className="hover:underline">Instagram</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold mb-3 text-sky-400">Industry Solutions</h3>
+            <ul className="space-y-1 text-sm">
+              <li><a href="#" className="hover:underline">Banking & Finance</a></li>
+              <li><a href="#" className="hover:underline">Education</a></li>
+              <li><a href="#" className="hover:underline">Technology</a></li>
+              <li><a href="#" className="hover:underline">Medical</a></li>
+              <li><a href="#" className="hover:underline">Government</a></li>
+              <li><a href="#" className="hover:underline">Legal</a></li>
+            </ul>
+          </div>
+        </footer>
       </div>
   );
 }
