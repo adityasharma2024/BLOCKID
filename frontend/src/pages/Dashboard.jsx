@@ -1,38 +1,69 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion'
-import { ethers } from 'ethers'
-import QRCode from 'qrcode'
-import Papa from 'papaparse'
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
+import React, { useState, useEffect } from "react";
+import myImage from "./image/Screenshot 2025-09-17 091406.png";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ethers } from "ethers";
+import QRCode from "qrcode";
+import Papa from "papaparse";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
-const BACKEND = 'http://localhost:4001'
+const BACKEND = "http://localhost:4001";
 const CONTRACT_ABI = [
-  { "inputs":[{"internalType":"string","name":"cid","type":"string"},{"internalType":"string","name":"title","type":"string"}],"name":"registerBlock","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"payable","type":"function" },
-  { "inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"hasRegistered","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function" },
-  { "inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getMyId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function" },
-  { "inputs":[],"name":"getContractBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function" }
-]
+  {
+    inputs: [
+      { internalType: "string", name: "cid", type: "string" },
+      { internalType: "string", name: "title", type: "string" },
+    ],
+    name: "registerBlock",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "hasRegistered",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "address", name: "user", type: "address" }],
+    name: "getMyId",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getContractBalance",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+];
 
-function shortAddr(a){ if(!a) return ''; return a.slice(0,6)+'...'+a.slice(-4) }
+function shortAddr(a) {
+  if (!a) return "";
+  return a.slice(0, 6) + "..." + a.slice(-4);
+}
 
-export default function Dashboard(){
-  const [provider, setProvider] = useState(null)
-  const [account, setAccount] = useState(null)
-  const [connected, setConnected] = useState(false)
-  const [contractAddr, setContractAddr] = useState(null)  
-  const [profile, setProfile] = useState(null)
-  const [ledger, setLedger] = useState([])
-  const [globalLedger, setGlobalLedger] = useState([])
-  const [recipientLookup, setRecipientLookup] = useState(null)
-  const [qrLongBlockid, setQrLongBlockid] = useState(null)
-  const [recipientAddressInput, setRecipientAddressInput] = useState('')
-  const [recipientNameInput, setRecipientNameInput] = useState('')
-  const [addresses, setAddresses] = useState([])
+export default function Dashboard() {
+  const [provider, setProvider] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [connected, setConnected] = useState(false);
+  const [contractAddr, setContractAddr] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [ledger, setLedger] = useState([]);
+  const [globalLedger, setGlobalLedger] = useState([]);
+  const [recipientLookup, setRecipientLookup] = useState(null);
+  const [qrLongBlockid, setQrLongBlockid] = useState(null);
+  const [recipientAddressInput, setRecipientAddressInput] = useState("");
+  const [recipientNameInput, setRecipientNameInput] = useState("");
+  const [addresses, setAddresses] = useState([]);
 
-  useEffect(()=>{
-    const p = localStorage.getItem('blockid_profile');
+  useEffect(() => {
+    const p = localStorage.getItem("blockid_profile");
 
     // ledger
     if (p) {
@@ -46,128 +77,190 @@ export default function Dashboard(){
     async function loadMyLedger(blockid) {
       if (!blockid) return;
       try {
-        const r = await fetch(BACKEND + '/api/ledger/by/' + blockid);
+        const r = await fetch(BACKEND + "/api/ledger/by/" + blockid);
         const d = await r.json();
         setLedger(d);
       } catch (e) {}
     }
 
-
-    fetchContract(); fetchGlobalLedger(); loadMyLedger();
+    fetchContract();
+    fetchGlobalLedger();
+    loadMyLedger();
     // try to set provider/account if MetaMask available
-    if(window.ethereum){
-      const prov = new ethers.BrowserProvider(window.ethereum)
-      setProvider(prov)
-      window.ethereum.request({ method: 'eth_accounts' }).then(accs=>{ if(accs && accs.length) { setAccount(accs[0]); setConnected(true); } })
+    if (window.ethereum) {
+      const prov = new ethers.BrowserProvider(window.ethereum);
+      setProvider(prov);
+      window.ethereum.request({ method: "eth_accounts" }).then((accs) => {
+        if (accs && accs.length) {
+          setAccount(accs[0]);
+          setConnected(true);
+        }
+      });
     }
-  }, [])
+  }, []);
 
   // Generate QR code for long block id (wallet address) when profile is available
-  useEffect(()=>{
-    if(profile && profile.address){
+  useEffect(() => {
+    if (profile && profile.address) {
       QRCode.toDataURL(profile.address)
-        .then(url => setQrLongBlockid(url))
-        .catch(()=>setQrLongBlockid(null))
+        .then((url) => setQrLongBlockid(url))
+        .catch(() => setQrLongBlockid(null));
     }
-  }, [profile])
+  }, [profile]);
 
   // Remove session on tab close/refresh
   useEffect(() => {
     const handleUnload = () => {
-      localStorage.removeItem('blockid_profile');
+      localStorage.removeItem("blockid_profile");
     };
-    window.addEventListener('beforeunload', handleUnload);
+    window.addEventListener("beforeunload", handleUnload);
     return () => {
-      window.removeEventListener('beforeunload', handleUnload);
+      window.removeEventListener("beforeunload", handleUnload);
     };
   }, []);
 
+  async function fetchContract() {
+    try {
+      const r = await fetch(BACKEND + "/api/contract");
+      const j = await r.json();
+      setContractAddr(j.address);
+    } catch (e) {}
+  }
+  async function fetchGlobalLedger() {
+    try {
+      const r = await fetch(BACKEND + "/api/ledger");
+      setGlobalLedger(await r.json());
+    } catch (e) {}
+  }
+  async function loadMyLedger() {
+    if (!profile) return;
+    try {
+      const r = await fetch(BACKEND + "/api/ledger/by/" + profile.blockid);
+      const d = await r.json();
+      setLedger(d);
+    } catch (e) {}
+  }
 
-  async function fetchContract(){ try{ const r=await fetch(BACKEND+'/api/contract'); const j=await r.json(); setContractAddr(j.address) }catch(e){} }
-  async function fetchGlobalLedger(){ try{ const r=await fetch(BACKEND+'/api/ledger'); setGlobalLedger(await r.json()) }catch(e){} }
-  async function loadMyLedger(){ if(!profile) return; try{ const r=await fetch(BACKEND+'/api/ledger/by/'+profile.blockid); const d=await r.json(); setLedger(d) }catch(e){} }
-
-  async function lookupRecipient(blockid){
-    if(!blockid) {
-      setRecipientLookup(null)
-      setRecipientAddressInput('')
-      setRecipientNameInput('')
-      return
+  async function lookupRecipient(blockid) {
+    if (!blockid) {
+      setRecipientLookup(null);
+      setRecipientAddressInput("");
+      setRecipientNameInput("");
+      return;
     }
-    try{
-      const r=await fetch(BACKEND + '/api/userByBlockid/' + blockid)
-      if(r.status===200){
-        const data = await r.json()
-        setRecipientLookup(data)
-        setRecipientAddressInput(data.address)
-        setRecipientNameInput(data.details.name)
+    try {
+      const r = await fetch(BACKEND + "/api/userByBlockid/" + blockid);
+      if (r.status === 200) {
+        const data = await r.json();
+        setRecipientLookup(data);
+        setRecipientAddressInput(data.address);
+        setRecipientNameInput(data.details.name);
       } else {
-        setRecipientLookup(null)
-        setRecipientAddressInput('')
-        setRecipientNameInput('')
+        setRecipientLookup(null);
+        setRecipientAddressInput("");
+        setRecipientNameInput("");
       }
-    }catch(e){
-      setRecipientLookup(null)
-      setRecipientAddressInput('')
-      setRecipientNameInput('')
+    } catch (e) {
+      setRecipientLookup(null);
+      setRecipientAddressInput("");
+      setRecipientNameInput("");
     }
   }
 
-  async function sendToRecipient(recipientBlockid, amountEth){
+  async function sendToRecipient(recipientBlockid, amountEth) {
     // Use input fields for address and name
-    const recipientAddress = recipientAddressInput
-    const recipientName = recipientNameInput
-    if(!recipientBlockid) return alert('Enter recipient BlockID')
-    if(!recipientAddress) return alert('Enter recipient address')
-    if(!recipientName) return alert('Enter recipient name')
-    if(!provider) return alert('Connect wallet in browser')
-    if(!amountEth || Number(amountEth)<=0) return alert('Invalid amount')
-    try{
-      const signer = await provider.getSigner()
-      const tx = await signer.sendTransaction({ to: recipientAddress, value: ethers.parseEther(amountEth) })
-      await tx.wait()
-      await fetch(BACKEND + '/api/ledger', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
-        senderBlockid: profile.blockid,
-        senderAddress: signer.address || account,
-        recipientBlockid,
-        recipientAddress,
-        recipientName,
-        amount: amountEth,
-        txHash: tx.hash
-      })})
-      alert('Transfer complete: '+tx.hash)
-      loadMyLedger(); fetchGlobalLedger()
-    }catch(e){ console.error(e); alert('Transfer failed: '+(e?.message||e)) }
+    const recipientAddress = recipientAddressInput;
+    const recipientName = recipientNameInput;
+    if (!recipientBlockid) return alert("Enter recipient BlockID");
+    if (!recipientAddress) return alert("Enter recipient address");
+    if (!recipientName) return alert("Enter recipient name");
+    if (!provider) return alert("Connect wallet in browser");
+    if (!amountEth || Number(amountEth) <= 0) return alert("Invalid amount");
+    try {
+      const signer = await provider.getSigner();
+      const tx = await signer.sendTransaction({
+        to: recipientAddress,
+        value: ethers.parseEther(amountEth),
+      });
+      await tx.wait();
+      await fetch(BACKEND + "/api/ledger", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          senderBlockid: profile.blockid,
+          senderAddress: signer.address || account,
+          recipientBlockid,
+          recipientAddress,
+          recipientName,
+          amount: amountEth,
+          txHash: tx.hash,
+        }),
+      });
+      alert("Transfer complete: " + tx.hash);
+      loadMyLedger();
+      fetchGlobalLedger();
+    } catch (e) {
+      console.error(e);
+      alert("Transfer failed: " + (e?.message || e));
+    }
   }
 
-  function exportCSV(data){
-    const csv = Papa.unparse(data)
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a'); a.href = url; a.download = 'ledger.csv'; a.click()
+  function exportCSV(data) {
+    const csv = Papa.unparse(data);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ledger.csv";
+    a.click();
   }
-  function exportPDF(data){
-    const doc = new jsPDF()
-    const rows = data.map(d=>[d.senderBlockid, d.senderAddress, d.recipientBlockid, d.recipientAddress, d.amount, new Date(d.timestamp).toLocaleString()])
-    doc.autoTable({ head:[['Sender ID','Sender','Recipient ID','Recipient','Amount','When']], body: rows })
-    doc.save('ledger.pdf')
+  function exportPDF(data) {
+    const doc = new jsPDF();
+    const rows = data.map((d) => [
+      d.senderBlockid,
+      d.senderAddress,
+      d.recipientBlockid,
+      d.recipientAddress,
+      d.amount,
+      new Date(d.timestamp).toLocaleString(),
+    ]);
+    doc.autoTable({
+      head: [
+        ["Sender ID", "Sender", "Recipient ID", "Recipient", "Amount", "When"],
+      ],
+      body: rows,
+    });
+    doc.save("ledger.pdf");
   }
 
-  if(!profile){
-    return <div className="min-h-screen flex items-center justify-center"><div className="p-6 bg-slate-800 rounded">Not logged in. Please login first.</div></div>
+  if (!profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="p-6 bg-slate-800 rounded">
+          Not logged in. Please login first.
+        </div>
+      </div>
+    );
   }
 
   return (
-    <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.45 }} className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-900 text-white">
-      
-      <main >
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-1200 text-white"
+    >
+      <main>
         {/* LEFT - hero / content */}
         <section className="col-span-2 space-y-6">
           <div className="space-y-4">
             <div className="p-6 rounded-2xl bg-slate-800 shadow flex flex-col md:flex-row justify-between items-start gap-8">
               <div className="flex-1 ml-20">
                 <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                  <span role="img" aria-label="profile">👤</span> Profile
+                  <span role="img" aria-label="profile">
+                    👤
+                  </span>{" "}
+                  Profile
                 </h3>
                 <div className="space-y-2 text-base">
                   <div>
@@ -187,7 +280,9 @@ export default function Dashboard(){
                     <span className="ml-2">{profile.details.tob}</span>
                   </div>
                   <div>
-                    <span className="font-semibold text-sky-400">BirthReg:</span>
+                    <span className="font-semibold text-sky-400">
+                      BirthReg:
+                    </span>
                     <span className="ml-2">{profile.details.birthReg}</span>
                   </div>
                   <div>
@@ -198,43 +293,55 @@ export default function Dashboard(){
               </div>
               <div className="flex-1 flex flex-col items-center">
                 <div className="mb-4">
-                  <span className="font-semibold text-sky-400">Long Block ID Address:</span>
-                    {addresses.map((addr, i) => (
-                      <li key={i} className="break-all flex items-center gap-1">
-                        <span role="img" aria-label="wallet">💳</span>
-                        {addr}
-                      </li>
-                    ))}
-                  
+                  <span className="font-semibold text-sky-400">
+                    Long Block ID Address:
+                  </span>
+                  {addresses.map((addr, i) => (
+                    <li key={i} className="break-all flex items-center gap-1">
+                      <span role="img" aria-label="wallet">
+                        💳
+                      </span>
+                      {addr}
+                    </li>
+                  ))}
                 </div>
                 {qrLongBlockid && (
                   <div className="flex flex-col items-center">
-                    <img src={qrLongBlockid} alt="Long BlockID QR" style={{ width: 175, height: 175 }} className="rounded shadow" />
-                    <div className="text-xs text-slate-400 mt-2">Scan for Wallet Address</div>
+                    <img
+                      src={qrLongBlockid}
+                      alt="Long BlockID QR"
+                      style={{ width: 175, height: 175 }}
+                      className="rounded shadow"
+                    />
+                    <div className="text-xs text-slate-400 mt-2">
+                      Scan for Wallet Address
+                    </div>
                   </div>
                 )}
               </div>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-800 shadow">
-              <h3 className="text-xl font-semibold">Transact (send ETH to another BlockID)</h3>
+              <h3 className="text-xl font-semibold">
+                Transact (send ETH to another BlockID)
+              </h3>
               <div className="grid grid-cols-1 gap-2">
                 <input
                   placeholder="Recipient BlockID (e.g. B1002)"
-                  onBlur={e=>lookupRecipient(e.target.value)}
+                  onBlur={(e) => lookupRecipient(e.target.value)}
                   id="recip"
                   className="p-2 rounded bg-slate-700"
                 />
                 <input
                   placeholder="Recipient Address"
                   value={recipientAddressInput}
-                  onChange={e=>setRecipientAddressInput(e.target.value)}
+                  onChange={(e) => setRecipientAddressInput(e.target.value)}
                   className="p-2 rounded bg-slate-700"
                 />
                 <input
                   placeholder="Recipient Name"
                   value={recipientNameInput}
-                  onChange={e=>setRecipientNameInput(e.target.value)}
+                  onChange={(e) => setRecipientNameInput(e.target.value)}
                   className="p-2 rounded bg-slate-700"
                 />
                 <input
@@ -245,22 +352,26 @@ export default function Dashboard(){
                 <div className="flex gap-2">
                   <button
                     className="bg-emerald-400 text-black px-4 py-2 rounded"
-                    onClick={()=>{
-                      const rid = document.getElementById('recip').value
-                      const amt = document.getElementById('amt').value
-                      sendToRecipient(rid, amt)
+                    onClick={() => {
+                      const rid = document.getElementById("recip").value;
+                      const amt = document.getElementById("amt").value;
+                      sendToRecipient(rid, amt);
                     }}
-                  >Send Ether</button>
+                  >
+                    Send Ether
+                  </button>
                   <button
                     className="bg-slate-700 text-white px-3 py-2 rounded"
-                    onClick={()=>{
-                      setRecipientLookup(null)
-                      setRecipientAddressInput('')
-                      setRecipientNameInput('')
-                      document.getElementById('recip').value=''
-                      document.getElementById('amt').value=''
+                    onClick={() => {
+                      setRecipientLookup(null);
+                      setRecipientAddressInput("");
+                      setRecipientNameInput("");
+                      document.getElementById("recip").value = "";
+                      document.getElementById("amt").value = "";
                     }}
-                  >Reset</button>
+                  >
+                    Reset
+                  </button>
                 </div>
               </div>
             </div>
@@ -271,12 +382,22 @@ export default function Dashboard(){
 
         {/* Right - Ledger */}
         <aside className="col-span-1">
-          <div className="p-4 rounded-2xl bg-slate-800 shadow sticky top-28">
+          <div className="p-4 rounded-2xl bg-slate-800 shadow">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Ledger</h3>
               <div className="flex gap-2">
-                <button className="bg-sky-500 px-2 py-1 rounded" onClick={()=>exportCSV(ledger)}>CSV</button>
-                <button className="bg-amber-400 px-2 py-1 rounded" onClick={()=>exportPDF(ledger)}>PDF</button>
+                <button
+                  className="bg-sky-500 px-2 py-1 rounded"
+                  onClick={() => exportCSV(ledger)}
+                >
+                  CSV
+                </button>
+                <button
+                  className="bg-amber-400 px-2 py-1 rounded"
+                  onClick={() => exportPDF(ledger)}
+                >
+                  PDF
+                </button>
               </div>
             </div>
             {/* <div className="mt-3 max-h-96 overflow-auto">
@@ -298,55 +419,162 @@ export default function Dashboard(){
               }
             </div> */}
 
-          <div className="mt-3 max-h-96 overflow-auto">
-            <table className="w-full text-sm">
-              <thead className="text-slate-400">
-                <tr>
-                  <th className="text-left">Sender</th>
-                  <th className="text-left">Recipient</th>
-                  <th>Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ledger.length === 0 ? (
+            <div className="mt-3 max-h-96 overflow-auto">
+              <table className="w-full text-sm">
+                <thead className="text-slate-400">
                   <tr>
-                    <td colSpan={3} className="py-4 text-center text-slate-400">
-                      No transactions for your BlockID yet.
-                    </td>
+                    <th className="text-left">Sender</th>
+                    <th className="text-left">Recipient</th>
+                    <th>Amount</th>
                   </tr>
-                ) : (
-                  ledger.map((r, i) => (
-                    <tr key={i} className="border-t border-slate-700">
-                      <td className="py-2">
-                        {r.senderBlockid}
-                        <div className="text-xs text-slate-500">{shortAddr(r.senderAddress)}</div>
+                </thead>
+                <tbody>
+                  {ledger.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={3}
+                        className="py-4 text-center text-slate-400"
+                      >
+                        No transactions for your BlockID yet.
                       </td>
-                      <td className="py-2">
-                        {r.recipientBlockid}
-                        <div className="text-xs text-slate-500">{shortAddr(r.recipientAddress)}</div>
-                      </td>
-                      <td className="py-2 text-center">{r.amount}</td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                  ) : (
+                    ledger.map((r, i) => (
+                      <tr key={i} className="border-t border-slate-700">
+                        <td className="py-2">
+                          {r.senderBlockid}
+                          <div className="text-xs text-slate-500">
+                            {shortAddr(r.senderAddress)}
+                          </div>
+                        </td>
+                        <td className="py-2">
+                          {r.recipientBlockid}
+                          <div className="text-xs text-slate-500">
+                            {shortAddr(r.recipientAddress)}
+                          </div>
+                        </td>
+                        <td className="py-2 text-center">{r.amount}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-            <div className="mt-3 text-xs text-slate-400">Showing transactions sent or received by your BlockID.</div>
+            <div className="mt-3 text-xs text-slate-400">
+              Showing transactions sent or received by your BlockID.
+            </div>
           </div>
 
           <div className="mt-4 p-4 rounded-2xl bg-slate-800 shadow">
             <h4 className="font-semibold">Global Ledger (admin)</h4>
-            <div className="mt-2 text-sm text-slate-400">Total entries: {globalLedger.length}</div>
+            <div className="mt-2 text-sm text-slate-400">
+              Total entries: {globalLedger.length}
+            </div>
           </div>
-          
         </aside>
-
       </main>
 
+      <br />
 
-
+      <footer
+        className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white grid grid-cols-1 md:grid-cols-4 gap-8 shadow-lg"
+        style={{ width: "100vw" }}
+      >
+        <div>
+          <img
+            src={myImage}
+            alt="BlockID logo"
+            className="w-32 mb-4 rounded-xl"
+          />
+          <div className="font-bold text-xl mb-2">BlockID</div>
+          <div className="text-slate-400 text-sm">
+            Empowering identity with blockchain technology.
+          </div>
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3 text-sky-400">Get to know us</h3>
+          <ul className="space-y-1 text-sm">
+            <li>
+              <a href="#" className="hover:underline">
+                About BlockID
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Careers
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Press & News
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                BlockID Science
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3 text-sky-400">Connect with us</h3>
+          <ul className="space-y-1 text-sm">
+            <li>
+              <a href="#" className="hover:underline">
+                Facebook
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Twitter
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Instagram
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3 text-sky-400">
+            Industry Solutions
+          </h3>
+          <ul className="space-y-1 text-sm">
+            <li>
+              <a href="#" className="hover:underline">
+                Banking & Finance
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Education
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Technology
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Medical
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Government
+              </a>
+            </li>
+            <li>
+              <a href="#" className="hover:underline">
+                Legal
+              </a>
+            </li>
+          </ul>
+        </div>
+      </footer>
     </motion.div>
-  )
+  );
 }
