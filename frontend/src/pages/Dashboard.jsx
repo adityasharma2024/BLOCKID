@@ -198,7 +198,7 @@ export default function Dashboard(){
               </div>
               <div className="flex-1 flex flex-col items-center">
                 <div className="mb-4">
-                  <span className="font-semibold text-sky-400">Wallet Addresses:</span>
+                  <span className="font-semibold text-sky-400">Long Block ID Address:</span>
                     {addresses.map((addr, i) => (
                       <li key={i} className="break-all flex items-center gap-1">
                         <span role="img" aria-label="wallet">💳</span>
