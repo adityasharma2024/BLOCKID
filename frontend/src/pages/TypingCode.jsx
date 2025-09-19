@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import './TypingCode.css';
+import React, { useState, useEffect } from "react";
+import "./TypingCode.css";
 
-const codeString = 
-`// BlockID demo code snippet
-void startCoding() {
-  // welcome
+const codeString = ` 
+  BlockID demo code snippet
+  void startCoding() {
+  welcome
   void calculate_hash(char *output, const char *input) {
-    // In a real project, this would be a SHA-256 hash function.
-    // Here, we just use a simple mock to produce a "hash".
+    In a real project, this would be a SHA-256 hash 
+    function.
+    Here, we just use a simple mock to produce a "hash".
     sprintf(output, "mock_hash_%ld", time(NULL));
   }
 
-  // Block structure
+  
+  Block structure
   typedef struct Block {
       int index;
       long timestamp;
@@ -22,33 +24,88 @@ void startCoding() {
       struct Block *next;
   } Block;`;
 
+const COLORS = ["color1", "color2", "color3"];
+const lines = codeString.split("\n");
+
 export default function TypingCode() {
-  const [displayedText, setDisplayedText] = useState('');
-  const [index, setIndex] = useState(0);
+  const [displayLines, setDisplayLines] = useState([]);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [currentCharIndex, setCurrentCharIndex] = useState(0);
+  const [direction, setDirection] = useState("down");
+  const [colorIdx, setColorIdx] = useState(0);
 
   useEffect(() => {
-    if (index < codeString.length) {
-      const timeout = setTimeout(() => {
-        setDisplayedText((prev) => prev + codeString[index]);
-        setIndex(index + 1);
-      }, 9); // Adjust typing speed here (in ms)
+    let timeout;
 
-      return () => clearTimeout(timeout);
-    } else {
-      // When done typing, reset to start after a short delay
-      const timeout = setTimeout(() => {
-        setDisplayedText('');
-        setIndex(0);
-      }, 500); // Pause before restarting
-
-      return () => clearTimeout(timeout);
+    if (direction === "down") {
+      if (currentLineIndex < lines.length) {
+        const line = lines[currentLineIndex];
+        if (currentCharIndex <= line.length) {
+          timeout = setTimeout(() => {
+            setDisplayLines((prev) => {
+              const updated = [...prev];
+              updated[currentLineIndex] = line.slice(0, currentCharIndex);
+              return updated;
+            });
+            setCurrentCharIndex((ch) => ch + 1);
+          }, 10); // typing speed per character
+        } else {
+          timeout = setTimeout(() => {
+            setCurrentLineIndex((line) => line + 1);
+            setCurrentCharIndex(0);
+          }, 200); // pause before next line
+        }
+      } else {
+        // Switch to erasing
+        timeout = setTimeout(() => {
+          setDirection("up");
+          setCurrentLineIndex(lines.length - 1);
+          setCurrentCharIndex(lines[lines.length - 1].length);
+        }, 500);
+      }
+    } else if (direction === "up") {
+      if (currentLineIndex >= 0) {
+        if (currentCharIndex > 0) {
+          timeout = setTimeout(() => {
+            setDisplayLines((prev) => {
+              const updated = [...prev];
+              updated[currentLineIndex] = updated[currentLineIndex].slice(
+                0,
+                -1
+              );
+              return updated;
+            });
+            setCurrentCharIndex((ch) => ch - 1);
+          }, 10); // erase speed per character
+        } else {
+          timeout = setTimeout(() => {
+            setCurrentLineIndex((line) => line - 1);
+            setCurrentCharIndex(
+              currentLineIndex - 1 >= 0 ? lines[currentLineIndex - 1].length : 0
+            );
+          }, 100); // pause between lines erasing
+        }
+      } else {
+        // Restart typing and change color
+        timeout = setTimeout(() => {
+          setDirection("down");
+          setCurrentLineIndex(0);
+          setCurrentCharIndex(0);
+          setDisplayLines([]);
+          setColorIdx((c) => (c + 1) % COLORS.length);
+        }, 800);
+      }
     }
-  }, [index]);
+
+    return () => clearTimeout(timeout);
+  }, [currentLineIndex, currentCharIndex, direction]);
 
   return (
-    <pre className="typing-pre">
-      {displayedText}
-      {index < codeString.length && <span className="caret" />}
+    <pre className={`typing-pre ${COLORS[colorIdx]}`}>
+      {displayLines.map((line = "", idx) => (
+        <div key={idx}>{line}</div>
+      ))}
+      <span className="caret" />
     </pre>
   );
 }
