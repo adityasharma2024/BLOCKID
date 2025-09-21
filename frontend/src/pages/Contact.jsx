@@ -66,7 +66,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white flex shadow-lg">
+      <footer className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white flex-wrap shadow-lg">
         <div className="flex justify-between " style={{ width: "100%" }}>
           <div>
             <img
@@ -163,7 +163,9 @@ export default function Home() {
           </div>
         </div>
         <br />
-        <div className="">BlockID. All rights reserved.</div>
+        <div className=" text-center text-xs text-slate-400">
+          &copy; {new Date().getFullYear()} BlockID. All rights reserved.
+        </div>
       </footer>
     </div>
   );

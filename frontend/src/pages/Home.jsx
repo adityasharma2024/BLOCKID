@@ -21,7 +21,7 @@ export default function Home() {
                 BlockID !
               </span>
             </h1>
-
+            <br />
             <section
               className="bg-gradient-to-r from-violet-100 to-purple-50 rounded-xl mb-8 shadow-lg border border-violet-200"
               style={{ padding: "1.5rem", marginRight: "2rem", width: "800px" }}
@@ -109,15 +109,16 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <br/>
         {/*part-2*/}
         <div
-          className="flex flex-row gap-8 justify-evenly items-stretch mb-8 bg-gradient-to-r from-violet-50 to-purple-100"
+          className="flex flex-row gap-8 justify-evenly items-stretch mb-8"
           style={{ width: "" }}
         >
           {/* About BLOCK ID */}
-          <section
-            className="flex-grow min-w-[220px] p-6 rounded-xl shadow border border-slate-200 flex flex-col"
-            style={{ margin: "1rem" }}
+          <div
+            className="flex-grow w-[220px] p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100 flex flex-col"
+            style={{ marginLeft: "5rem" }}
           >
             <h3 className="text-2xl font-bold text-violet-700 mb-2">
               About BLOCK ID
@@ -133,11 +134,11 @@ export default function Home() {
               <li>Seamless financial KYC.</li>
               <li>Transparent access to welfare schemes.</li>
             </ul>
-          </section>
+          </div>
           {/* Key Features */}
-          <section
-            className="flex-grow min-w-[220px] p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100 flex flex-col"
-            style={{ margin: "1rem" }}
+          <div
+            className="flex-grow w-[220px] p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100 flex flex-col"
+            style={{ margin: "" }}
           >
             <h3 className="text-2xl font-bold text-violet-700 mb-4">
               Key Features
@@ -164,11 +165,11 @@ export default function Home() {
                 authorized keys.
               </li>
             </ul>
-          </section>
+          </div>
           {/* How It Works */}
-          <section
-            className="flex-grow min-w-[220px] p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100 flex flex-col"
-            style={{ margin: "1rem" }}
+          <div
+            className="flex-grow w-[220px] p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100 flex flex-col"
+            style={{ marginRight: "3rem" }}
           >
             <h3 className="text-2xl font-bold text-violet-700 mb-4">
               How It Works
@@ -189,15 +190,14 @@ export default function Home() {
                 instantly.
               </li>
             </ol>
-          </section>
+          </div>
         </div>
         {/*part-3*/}
         <div
-          className=""
-          style={{ width: "700px", transform: "translateX(5rem)" }}
+          className="flex flex-row gap-4 justify-evenly items-stretch mb-8"
+          style={{marginLeft:"5rem", marginRight:"3rem"}}
         >
-          {" "}
-          <section className="mb-8 p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100">
+          <div className="mb-8 w-full p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100">
             <h3 className="text-2xl font-bold text-violet-700 mb-4">
               Why BLOCK ID?
             </h3>
@@ -209,8 +209,9 @@ export default function Home() {
               </li>
               <li>✔ Aligned with Digital India & India Stack vision.</li>
             </ul>
-          </section>
-          <section className="mb-8 p-6 rounded-xl bg-white/80 shadow border border-slate-200 text-center">
+          </div>
+
+          <div className="mb-8  w-full p-6 rounded-xl bg-white/80 shadow border border-slate-200 text-center">
             <h3 className="text-2xl font-bold text-violet-700 mb-2">
               Ready to step into a secure digital future?
             </h3>
@@ -231,13 +232,11 @@ export default function Home() {
                 Contact Us
               </Link>
             </div>
-          </section>
+          </div>
         </div>
       </main>
-      <footer
-        className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white flex shadow-lg">
-        <div className="flex justify-between "
-        style={{width:"100%"}}>
+      <footer className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white flex-wrap shadow-lg">
+        <div className="flex justify-between " style={{ width: "100%" }}>
           <div>
             <img
               src={myImage}
@@ -333,8 +332,8 @@ export default function Home() {
           </div>
         </div>
         <br />
-        <div className="">
-          BlockID. All rights reserved.
+        <div className=" text-center text-xs text-slate-400">
+          &copy; {new Date().getFullYear()} BlockID. All rights reserved.
         </div>
       </footer>
     </div>
