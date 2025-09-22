@@ -19,12 +19,12 @@ export default function Home() {
             <h1 className="text-6xl font-extrabold leading-tight tracking-tight mt-6">
               Featuring New Technology{" "}
               <span className="text-transparent mt-4 bg-clip-text bg-gradient-to-r from-purple-400 to-violet-600 block">
-                BlockID !
+                Block<span className="text-emerald-400">ID</span>
               </span>
             </h1>
             <br />
             <section
-              className="bg-gradient-to-r from-violet-100 to-purple-50 rounded-xl mb-8 shadow-lg border border-violet-200"
+              className="bg-[#f0fdfa] from-violet-100 to-purple-50 rounded-xl mb-8 shadow-lg border border-violet-200"
               style={{ padding: "1.5rem", marginRight: "2rem", width: "800px" }}
             >
               <h2 className="text-4xl font-bold text-violet-700 mb-2 flex items-center gap-2">
