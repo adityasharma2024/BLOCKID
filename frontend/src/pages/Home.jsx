@@ -1,5 +1,6 @@
 import React from "react";
 import myImage from "./image/Screenshot 2025-09-17 091406.png";
+import "./footer.css"; // Ensure you have the CSS for typing effect
 import TypingCode from "./TypingCode"; // Adjust path if necessary
 import "./TypingCode.css"; // Ensure you have the CSS for typing effect
 import { Link } from "react-router-dom";
@@ -109,7 +110,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <br/>
+        <br />
         {/*part-2*/}
         <div
           className="flex flex-row gap-8 justify-evenly items-stretch mb-8"
@@ -195,7 +196,7 @@ export default function Home() {
         {/*part-3*/}
         <div
           className="flex flex-row gap-4 justify-evenly items-stretch mb-8"
-          style={{marginLeft:"5rem", marginRight:"3rem"}}
+          style={{ marginLeft: "5rem", marginRight: "3rem" }}
         >
           <div className="mb-8 w-full p-6 rounded-xl bg-gradient-to-r from-violet-50 to-purple-100 shadow border border-violet-100">
             <h3 className="text-2xl font-bold text-violet-700 mb-4">
@@ -235,105 +236,82 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className="mt-16 py-8 px-6 rounded-xl bg-slate-900/80 text-white flex-wrap shadow-lg">
-        <div className="flex justify-between " style={{ width: "100%" }}>
-          <div>
-            <img
-              src={myImage}
-              alt="BlockID logo"
-              className="w-32 mb-4 rounded-xl"
-            />
-            <div className="font-bold text-xl mb-2">BlockID</div>
-            <div className="text-slate-400 text-sm">
-              Empowering identity with blockchain technology.
-            </div>
+
+      <footer class="academic-footer">
+        <div class="footer-top" style={{marginBottom:" "}}>
+          <p class="footer-title" >
+            <span>
+              🚀 Revolutionary Blockchain-Based Academic Certificate Issuence
+              and Verification System
+            </span>
+          </p>
+          <p class="footer-desc">
+            Ensuring authenticity, preventing fraud, and providing tamper-proof
+            verification through cutting-edge unique NFT technology and smart
+            contract innovation.
+          </p>
+          <div class="footer-icons">
+            <span>⚡ Instant Verification</span>
+            <span>🛡 Tamper-Proof Security</span>
+            <span>🌎 Global Accessibility</span>
           </div>
-          <div>
-            <h3 className="font-semibold mb-3 text-sky-400">Get to know us</h3>
-            <ul className="space-y-1 text-sm">
+        </div>
+        <div class="footer-middle">
+          <div class="footer-col">
+            <h1>🏦SUST</h1>
+            <h6 style={{ marginLeft: "10px" }}> E-Certificate System</h6>
+            <p style={{ marginTop: "10px" }}>
+              This system utilizes blockchain technology to ensure the
+              authenticity and integrity of academic certificates by providing
+              permanent verification and preventing fraud.
+            </p>
+          </div>
+          <div class="footer-col quick-links">
+            <h4 style={{ marginLeft: "100px" }}>Quick Links</h4>
+            <ul>
               <li>
-                <a href="#" className="hover:underline">
-                  About BlockID
+                <a href="#" style={{ marginLeft: "100px" }}>
+                  🔐 Admin Portal
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:underline">
-                  Careers
+                <a href="#" style={{ marginLeft: "100px" }}>
+                  🎓 Student Portal
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:underline">
-                  Press & News
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  BlockID Science
+                <a href="#" style={{ marginLeft: "100px" }}>
+                  ✅ Verify Certificate
                 </a>
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="font-semibold mb-3 text-sky-400">Connect with us</h3>
-            <ul className="space-y-1 text-sm">
-              <li>
-                <a href="#" className="hover:underline">
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Instagram
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold mb-3 text-sky-400">
-              Industry Solutions
-            </h3>
-            <ul className="space-y-1 text-sm">
-              <li>
-                <a href="#" className="hover:underline">
-                  Banking & Finance
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Education
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Technology
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Medical
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Government
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:underline">
-                  Legal
-                </a>
-              </li>
+          <div class="footer-col" style={{ display: "" }}>
+            <h4 style={{ marginLeft: "100px" }}>Technology</h4>
+            <ul>
+              <li style={{ marginLeft: "100px" }}>⚡ Blockchain Powered</li>
+              <li style={{ marginLeft: "100px" }}>🛡️ NFT Certificates</li>
+              <li style={{ marginLeft: "100px" }}>🔒 Tamper Proof</li>
             </ul>
           </div>
         </div>
-        <br />
-        <div className=" text-center text-xs text-slate-400">
-          &copy; {new Date().getFullYear()} BlockID. All rights reserved.
+        <div class="footer-bottom">
+          <div style={{ marginLeft: "10px" }}>
+            <p>
+              <h1>© 2025 Block Id.</h1>
+              <h1>All rights reserved.</h1>
+            </p>
+          </div>
+          <div id="item">
+            <div>
+              <h5>Powered by </h5>
+              <h1>🦊MetaMask</h1>
+            </div>
+            <div style={{ marginLeft: "30px" }}>
+              <h5>Built on</h5>
+              <h1>⚡Ethereum</h1>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
